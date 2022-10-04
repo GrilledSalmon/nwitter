@@ -1,25 +1,31 @@
 import React, { useState } from "react";
-import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  HashRouter as Router,
+  Navigate,
+  Route,
+  Routes
+} from "react-router-dom";
 import Auth from "routes/Auth";
 import Home from "routes/Home";
+import Profile from "routes/Profile";
+import Navigation from "components/Navigation";
 
-const AppRouter = ({ isLoggedIn }) => {
+const AppRouter = ({ isLoggedIn, userObj }) => {
   // Switch를 사용하기 때문에 첫 번째로 매칭되는 path만 렌더링된다.
   return (
     <Router>
-      <Switch>
+      {isLoggedIn && <Navigation />}
+      <Routes>
         {isLoggedIn ? (
           <>
-            <Route exact path="/">
-              <Home />
-            </Route>
+            <Route path="/" element={<Home userObj={userObj} />} />
+            <Route path="/profile" element={<Profile />} />
           </>
         ) : (
-          <Route exact path="/">
-            <Auth />
-          </Route>
+          <Route path="/" element={<Auth />} />
         )}
-      </Switch>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </Router>
   );
 };

@@ -1,3 +1,15 @@
-import React from "react";
+import { authService } from 'fbase';
+import React from 'react';
 
-export default () => <span>Profile</span>;
+const auth = authService.getAuth();
+
+const Profile = () => {
+  const onLogOutClick = () => authService.signOut(auth);
+  return (
+    <>
+      <button onClick={onLogOutClick}>Log Out</button>
+    </>
+  );
+};
+
+export default Profile;
